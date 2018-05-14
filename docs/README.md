@@ -1,4 +1,4 @@
-# Harbor
+# ZCP Registry
 
 ## Helm package
 
@@ -22,23 +22,23 @@ NAME     	URL
 ...
 zcp      	https://cnpst.github.io/charts
 
-# helm search harbor
-NAME        	VERSION	DESCRIPTION
-zcp/harbor  	0.1.1  	An Enterprise-class Docker Registry by VMware
+# helm search zcp-registry
+NAME        	    VERSION	 DESCRIPTION
+zcp/zcp-registry  	x.x.x  	 xxx
 ```
 
-## Deploy Harbor Helm Chart
+## Deploy ZCP Registry Helm Chart
 
 1. Edit values.yaml
 
     ```
-    # The FQDN for Harbor service.
-    externalDomain: harbor.example.com
+    # The FQDN for ZCP Registry service.
+    externalDomain: registry.example.com
 
-    # Harbor FQDN as insecure-registries for your docker client.
+    # ZCP Registry FQDN as insecure-registries for your docker client.
     insecureRegistry: false
 
-    # The TLS certificate for Harbor. The common name of tlsCrt must match the externalDomain above.
+    # The TLS certificate for ZCP Registry. The common name of tlsCrt must match the externalDomain above.
     tlsCrt: |
       -----BEGIN CERTIFICATE-----
       ...
@@ -50,13 +50,13 @@ zcp/harbor  	0.1.1  	An Enterprise-class Docker Registry by VMware
       -----END RSA PRIVATE KEY-----
 
     adminserver:
-      adminPassword: Harbor12345
+      adminPassword: Registry12345
     ```
 
 2. Deploy
 
     ```
-    helm install --namespace=harbor --name harbor -f values.yaml zcp/harbor
+    helm install --namespace=zcp-registry --name zcp-registry -f values.yaml zcp/zcp-registry
     ```
 
 3. Optional
