@@ -3,12 +3,13 @@
 ## Helm package
 
 ```
-git clone https://github.com/cnpst/charts.git
-cd charts
-helm dependency build harbor
-helm package harbor
-mv harbor-x.x.x.tgz docs
-helm repo index docs --url https://cnpst.github.io/charts
+git clone https://github.com/cnpst/zcp-registry.git
+helm dependency build zcp-registry
+helm package zcp-registry
+
+git clone https://cnpst.github.io/charts
+mv zcp-registry-x.x.x.tgz charts/docs
+helm repo index charts/docs --url https://cnpst.github.io/charts
 ```
 
 ## Add Helm repository
