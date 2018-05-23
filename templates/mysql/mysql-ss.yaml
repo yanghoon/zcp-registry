@@ -38,7 +38,6 @@ spec:
       - name: "mysql-data"
         emptyDir: {}
       {{- end -}}
-
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
