@@ -261,7 +261,7 @@ registry:
   #  addr: "redis-host:6379"
   #  db: 2
 
-  
+
 clair:
   enabled: true
   image:
@@ -349,3 +349,9 @@ notary:
     #  requests:
     #    memory: 256Mi
     #    cpu: 100m
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

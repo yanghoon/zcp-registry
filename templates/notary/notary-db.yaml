@@ -19,7 +19,7 @@ spec:
 {{ include "harbor.labels" . | indent 8 }}
         component: notary-db
     spec:
-      initContainers: 
+      initContainers:
       - name: move-init-scripts
         image: alpine:3.6
         imagePullPolicy: IfNotPresent
@@ -63,6 +63,18 @@ spec:
       - name: notary-db-data
         emptyDir: {}
       {{- end -}}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
