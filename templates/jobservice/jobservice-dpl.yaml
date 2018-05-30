@@ -45,15 +45,15 @@ spec:
           name: "{{ template "harbor.fullname" . }}-jobservice"
       - name: job-logs
         emptyDir: {}
-    {{- with .Values.nodeSelector }}
+    {{- with .Values.jobservice.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.affinity }}
+    {{- with .Values.jobservice.affinity }}
       affinity:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.tolerations }}
+    {{- with .Values.jobservice.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}

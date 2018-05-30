@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This [Helm](https://github.com/kubernetes/helm) chart installs [Harbor](http://vmware.github.io/harbor/) in a Kubernetes cluster. Currently this chart supports Harbor v1.5.0 release. Welcome to [contribute](CONTRIBUTING.md) to Helm Chart for Harbor.
+This [Helm](https://github.com/kubernetes/helm) chart installs [Harbor](http://vmware.github.io/harbor/) in a Kubernetes cluster. Currently this chart supports Harbor v1.4.0 release. Welcome to [contribute](CONTRIBUTING.md) to Helm Chart for Harbor.
 
 ## Prerequisites
 
@@ -107,7 +107,7 @@ The following tables lists the configurable parameters of the Harbor chart and t
 | Parameter                  | Description                        | Default                 |
 | -----------------------    | ---------------------------------- | ----------------------- |
 | **Harbor** |
-| `harborImageTag`     | The tag for Harbor docker images | `v1.5.0` |
+| `harborImageTag`     | The tag for Harbor docker images | `v1.4.0` |
 | `externalDomain`       | Harbor will run on (https://`externalDomain`/). Recommend using K8s Ingress Controller FQDN as `externalDomain`, or make sure this FQDN resolves to the K8s Ingress Controller IP. | `harbor.my.domain` |
 | `insecureRegistry`     | If set to true, you don't need to set tlsCrt/tlsKey/caCrt, but must add Harbor FQDN as insecure-registries for your docker client. | `false` |
 | `generateCertificates`  | Set to false if TLS certificate will be managed by an external service | `true` |
@@ -118,7 +118,7 @@ The following tables lists the configurable parameters of the Harbor chart and t
 | `secretKey` | The secret key used for encryption. Must be a string of 16 chars. | `not-a-secure-key` |
 | **Adminserver** |
 | `adminserver.image.repository` | Repository for adminserver image | `vmware/harbor-adminserver` |
-| `adminserver.image.tag` | Tag for adminserver image | `v1.5.0` |
+| `adminserver.image.tag` | Tag for adminserver image | `v1.4.0` |
 | `adminserver.image.pullPolicy` | Pull Policy for adminserver image | `IfNotPresent` |
 | `adminserver.emailHost` | email server | `smtp.mydomain.com` |
 | `adminserver.emailPort` | email port | `25` |
@@ -141,24 +141,33 @@ The following tables lists the configurable parameters of the Harbor chart and t
 | `adminserver.ldap.verifyCert` | LDAP Verify HTTPS Certificate | `True` |
 | `adminserver.resources` | [resources](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) to allocate for container   | undefined |
 | `adminserver.volumes` | used to create PVCs if persistence is enabled (see instructions in values.yaml) | see values.yaml |
+| `adminserver.nodeSelector` | Node labels for pod assignment | `{}` |
+| `adminserver.tolerations` | Tolerations for pod assignment | `[]` |
+| `adminserver.affinity` | Node/Pod affinities | `{}` |
 | **Jobservice** |
 | `jobservice.image.repository` | Repository for jobservice image | `vmware/harbor-jobservice` |
-| `jobservice.image.tag` | Tag for jobservice image | `v1.5.0` |
+| `jobservice.image.tag` | Tag for jobservice image | `v1.4.0` |
 | `jobservice.image.pullPolicy` | Pull Policy for jobservice image | `IfNotPresent` |
 | `jobservice.key` | jobservice key | `not-a-secure-key` |
 | `jobservice.secret` | jobservice secret | `not-a-secure-secret` |
 | `jobservice.resources` | [resources](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) to allocate for container   | undefined |
+| `jobservice.nodeSelector` | Node labels for pod assignment | `{}` |
+| `jobservice.tolerations` | Tolerations for pod assignment | `[]` |
+| `jobservice.affinity` | Node/Pod affinities | `{}` |
 | **UI** |
 | `ui.image.repository` | Repository for ui image | `vmware/harbor-ui` |
-| `ui.image.tag` | Tag for ui image | `v1.5.0` |
+| `ui.image.tag` | Tag for ui image | `v1.4.0` |
 | `ui.image.pullPolicy` | Pull Policy for ui image | `IfNotPresent` |
 | `ui.key` | ui key | `not-a-secure-key` |
 | `ui.secret` | ui secret | `not-a-secure-secret` |
 | `ui.privateKeyPem` | ui private key | see values.yaml |
 | `ui.resources` | [resources](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) to allocate for container   | undefined |
+| `ui.nodeSelector` | Node labels for pod assignment | `{}` |
+| `ui.tolerations` | Tolerations for pod assignment | `[]` |
+| `ui.affinity` | Node/Pod affinities | `{}` |
 | **MySQL** |
 | `mysql.image.repository` | Repository for mysql image | `vmware/harbor-mysql` |
-| `mysql.image.tag` | Tag for mysql image | `v1.5.0` |
+| `mysql.image.tag` | Tag for mysql image | `v1.4.0` |
 | `mysql.image.pullPolicy` | Pull Policy for mysql image | `IfNotPresent` |
 | `mysql.host` | MySQL Server | `~` |
 | `mysql.port` | MySQL Port | `3306` |
@@ -167,30 +176,41 @@ The following tables lists the configurable parameters of the Harbor chart and t
 | `mysql.database` | MySQL Database | `registry` |
 | `mysql.resources` | [resources](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) to allocate for container   | undefined |
 | `mysql.volumes` | used to create PVCs if persistence is enabled (see instructions in values.yaml) | see values.yaml |
+| `mysql.nodeSelector` | Node labels for pod assignment | `{}` |
+| `mysql.tolerations` | Tolerations for pod assignment | `[]` |
+| `mysql.affinity` | Node/Pod affinities | `{}` |
 | **Registry** |
 | `registry.image.repository` | Repository for registry image | `vmware/registry-photon` |
-| `registry.image.tag` | Tag for registry image | `v2.6.2-v1.5.0` |
+| `registry.image.tag` | Tag for registry image | `v2.6.2-v1.4.0` |
 | `registry.image.pullPolicy` | Pull Policy for registry image | `IfNotPresent` |
 | `registry.rootCrt` | registry root cert | see values.yaml |
 | `registry.httpSecret` | registry secret | `not-a-secure-secret` |
 | `registry.resources` | [resources](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) to allocate for container   | undefined |
 | `registry.volumes` | used to create PVCs if persistence is enabled (see instructions in values.yaml) | see values.yaml |
+| `registry.nodeSelector` | Node labels for pod assignment | `{}` |
+| `registry.tolerations` | Tolerations for pod assignment | `[]` |
+| `registry.affinity` | Node/Pod affinities | `{}` |
 | **Clair** |
 | `clair.enabled` | Enable Clair? | `true` |
 | `clair.image.repository` | Repository for clair image | `vmware/clair-photon` |
-| `clair.image.tag` | Tag for clair image | `v2.0.1-v1.5.0`
+| `clair.image.tag` | Tag for clair image | `v2.0.1-v1.4.0`
 | `clair.resources` | [resources](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) to allocate for container   | undefined
+| `clair.nodeSelector` | Node labels for pod assignment | `{}` |
+| `clair.tolerations` | Tolerations for pod assignment | `[]` |
+| `clair.affinity` | Node/Pod affinities | `{}` |
 | `postgresql` | Overrides for postgresql chart [values.yaml](https://github.com/kubernetes/charts/blob/f2938a46e3ae8e2512ede1142465004094c3c333/stable/postgresql/values.yaml) | see values.yaml
 | **Notary** |
 | `notary.enabled` | Enable Notary? | `true` |
 | `notary.server.image.repository` | Repository for notary server image | `vmware/notary-server-photon` |
-| `notary.server.image.tag` | Tag for notary server image | `v0.5.1-v1.5.0`
+| `notary.server.image.tag` | Tag for notary server image | `v0.5.1-v1.4.0`
 | `notary.signer.image.repository` | Repository for notary signer image | `vmware/notary-signer-photon` |
-| `notary.signer.image.tag` | Tag for notary signer image | `v0.5.1-v1.5.0`
+| `notary.signer.image.tag` | Tag for notary signer image | `v0.5.1-v1.4.0`
 | `notary.db.image.repository` | Repository for notary database image | `vmware/mariadb-photon` |
-| `notary.db.image.tag` | Tag for notary database image | `v1.5.0`
+| `notary.db.image.tag` | Tag for notary database image | `v1.4.0`
 | `notary.db.password` | The password of users for notary database | Specify your own password |
-
+| `notary.nodeSelector` | Node labels for pod assignment | `{}` |
+| `notary.tolerations` | Tolerations for pod assignment | `[]` |
+| `notary.affinity` | Node/Pod affinities | `{}` |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 

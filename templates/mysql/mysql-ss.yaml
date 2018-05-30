@@ -38,15 +38,15 @@ spec:
       - name: "mysql-data"
         emptyDir: {}
       {{- end -}}
-    {{- with .Values.nodeSelector }}
+    {{- with .Values.mysql.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.affinity }}
+    {{- with .Values.mysql.affinity }}
       affinity:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.tolerations }}
+    {{- with .Values.mysql.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}
