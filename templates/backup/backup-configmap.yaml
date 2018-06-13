@@ -1,0 +1,29 @@
+{{ if .Values.backup.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ template "harbor.fullname" . }}-backup"
+data:
+  dump-database.sh: |
+    DATE=`TZ='{{ .Values.backup.timezone }}' date +%Y%m%d`
+
+    kubectl exec {{ template "harbor.fullname" . }}-mysql-0 -it \
+    -- mysqldump registry -u root -p"$REGISTRY_MYSQL_PASSWORD" \
+    > /backup/zcp-registry-mysql-"$DATE".sql
+
+    cat /backup/zcp-registry-mysql-"$DATE".sql
+
+  upload-to-s3.sh: |
+    DATE=`TZ='{{ .Values.backup.timezone }}' date +%Y%m%d`
+
+    export AWS_ACCESS_KEY_ID="{{ .Values.backup.objectStorage.s3.accesskey }}"
+    export AWS_SECRET_ACCESS_KEY="{{ .Values.backup.objectStorage.s3.secretkey }}"
+    export S3_ENDPOINT="{{ .Values.backup.objectStorage.s3.regionendpoint }}"
+    export S3_BUCKET="{{ .Values.backup.objectStorage.s3.bucket }}"
+
+    aws --endpoint-url="$S3_ENDPOINT" s3 cp \
+    /backup/zcp-registry-mysql-"$DATE".sql \
+    s3://"$S3_BUCKET"
+
+    rm -f /backup/zcp-registry-mysql-"$DATE".sql
+{{ end }}

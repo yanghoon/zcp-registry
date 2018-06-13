@@ -369,3 +369,34 @@ notary:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
+backup:
+  enabled: false
+  serviceAccount:
+  serviceAccountSecretName:
+  timezone:
+  schedule:
+  objectStorage:
+    s3:
+      region:
+      regionendpoint:
+      accesskey:
+      secretkey:
+      bucket:
+  kubectl:
+    image:
+      repository: lachlanevenson/k8s-kubectl
+      tag: v1.9.7
+      pullPolicy: Always
+  s3:
+    image:
+      repository: mesosphere/aws-cli
+      tag: latest
+      pullPolicy: Always
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}

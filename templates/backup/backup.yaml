@@ -1,0 +1,88 @@
+{{ if .Values.backup.enabled }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: "{{ template "harbor.fullname" . }}-backup"
+  labels:
+{{ include "harbor.labels" . | indent 4 }}
+    component: backup
+spec:
+  schedule: "{{ .Values.backup.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: kubectl
+            image: {{ .Values.backup.kubectl.image.repository }}:{{ .Values.backup.kubectl.image.tag }}
+            imagePullPolicy: {{ .Values.backup.kubectl.image.pullPolicy }}
+            command: ["/bin/sh"]
+            args: ["-c", "/backup/scripts/dump-database.sh"]
+            env:
+            - name: REGISTRY_MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: mysqlRootPassword
+                  name: "{{ template "harbor.fullname" . }}-mysql"
+            ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+            resources:
+{{ toYaml .Values.backup.resources | indent 14 }}
+            volumeMounts:
+            - mountPath: /backup
+              name: backup-dir
+            - mountPath: /backup/scripts
+              name: backup-scripts-config
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: service-account-secret-name
+              readOnly: true
+          - name: s3
+            image: {{ .Values.backup.s3.image.repository }}:{{ .Values.backup.s3.image.tag }}
+            imagePullPolicy: {{ .Values.backup.s3.image.pullPolicy }}
+            command: ["/bin/sh"]
+            args: ["-c", "/backup/scripts/upload-to-s3.sh"]
+            ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+            resources:
+{{ toYaml .Values.backup.resources | indent 14 }}
+            volumeMounts:
+            - mountPath: /backup
+              name: backup-dir
+            - mountPath: /backup/scripts
+              name: backup-scripts-config
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: service-account-secret-name
+              readOnly: true
+          securityContext:
+            runAsUser: 0
+          serviceAccount: {{ .Values.backup.serviceAccount }}
+          serviceAccountName: {{ .Values.backup.serviceAccount }}
+          volumes:
+          - name: backup-dir
+            emptyDir: {}
+          - configMap:
+              defaultMode: 0755
+              name: "{{ template "harbor.fullname" . }}-backup"
+            name: backup-scripts-config
+          - name: service-account-secret-name
+            secret:
+              defaultMode: 420
+              secretName: {{ .Values.backup.serviceAccountSecretName }}
+        {{- with .Values.backup.nodeSelector }}
+          nodeSelector:
+{{ toYaml . | indent 12 }}
+        {{- end }}
+        {{- with .Values.backup.affinity }}
+          affinity:
+{{ toYaml . | indent 12 }}
+        {{- end }}
+        {{- with .Values.backup.tolerations }}
+          tolerations:
+{{ toYaml . | indent 12 }}
+        {{- end }}
+          restartPolicy: OnFailure
+{{ end }}

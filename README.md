@@ -1,4 +1,4 @@
-# Helm Chart for Harbor
+# Helm Chart for ZCP Registry
 
 ## Introduction
 
