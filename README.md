@@ -211,6 +211,22 @@ The following tables lists the configurable parameters of the Harbor chart and t
 | `notary.nodeSelector` | Node labels for pod assignment | `{}` |
 | `notary.tolerations` | Tolerations for pod assignment | `[]` |
 | `notary.affinity` | Node/Pod affinities | `{}` |
+| **backup** |
+| `backup.enabled` | Enable backup? | `false` |
+| `backup.serviceAccount` | Service account name. e.g) default | undefined |
+| `backup.serviceAccountSecretName` | Service account secret name. e.g) default-token-xxx  | undefined |
+| `backup.timezone` | Time zone. e.g) Asia/Seoul | undefined |
+| `backup.schedule` | Time zone. e.g) "*/1 16 * * *" | undefined |
+| `backup.kubectl.image.repository` | Repository for kubectl image | `lachlanevenson/k8s-kubectl` |
+| `backup.kubectl.image.tag` | Tag for kubectl image | `v1.9.7` |
+| `backup.kubectl.image.pullPolicy` | PullPolicy for kubectl image | `IfNotPresent` |
+| `backup.s3.image.repository` | Repository for kubectl image | `mesosphere/aws-cli` |
+| `backup.s3.image.tag` | Tag for kubectl image | `1.14.5` |
+| `backup.s3.image.pullPolicy` | PullPolicy for kubectl image | `IfNotPresent` |
+| `backup.resources` | [resources](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) to allocate for container   | {requests: {cpu: 100m, memory: 128Mi}} |
+| `backup.nodeSelector` | Node labels for pod assignment | `{}` |
+| `backup.tolerations` | Tolerations for pod assignment | `[]` |
+| `backup.affinity` | Node/Pod affinities | `{}` |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 
