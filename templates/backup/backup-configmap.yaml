@@ -18,7 +18,7 @@ data:
 
     export AWS_ACCESS_KEY_ID="{{ .Values.backup.objectStorage.s3.accesskey }}"
     export AWS_SECRET_ACCESS_KEY="{{ .Values.backup.objectStorage.s3.secretkey }}"
-    export S3_ENDPOINT="{{ .Values.backup.objectStorage.s3.regionendpoint }}"
+    export S3_ENDPOINT="https://{{ .Values.backup.objectStorage.s3.regionendpoint }}"
     export S3_BUCKET="{{ .Values.backup.objectStorage.s3.bucket }}"
 
     aws --endpoint-url="$S3_ENDPOINT" s3 cp \
